@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "az-df-proj1-ecom"
+		},
+		"ls_az_sqlserver_connectionString": {
+			"value": ""
+		},
+		"ls_azdatalake_accountKey": {
+			"value": ""
+		},
+		"ls_onprem_sqlserver_connectionString": {
+			"value": "Integrated Security=True;Data Source=localhost;Initial Catalog=master"
+		},
+		"ls_onprem_sqlserver_password": {
+			"value": ""
+		},
+		"ls_azdatalake_properties_typeProperties_url": {
+			"value": "https://ecommdatalake.dfs.core.windows.net/"
+		},
+		"ls_onprem_sqlserver_properties_typeProperties_userName": {
+			"value": "PURNA\\Priyadarshini"
+		}
+	}
+}

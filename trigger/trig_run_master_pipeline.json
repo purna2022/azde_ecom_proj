@@ -1,0 +1,30 @@
+{
+	"name": "trig_run_master_pipeline",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "1 Master Pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2024-05-20T12:18:00",
+				"endTime": "2024-05-24T12:18:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"hours": [
+						22
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,52 @@
+{
+	"name": "1 Master Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load Hydration File into Datalake",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "2 Copy Hydration FIle to Datalake",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Load Hydration Pipeline to Database Tab",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Load Hydration File into Datalake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "3 Load Hydartion File to DB",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "MiniProject"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-05-17T06:38:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

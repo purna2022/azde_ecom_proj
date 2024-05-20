@@ -1,0 +1,9 @@
+{
+	"name": "az-df-proj1-ecom",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1d1b0cc0-5fdc-43bd-a938-4072fdb81697",
+		"tenantId": "06867c10-5991-40e6-aaca-cbf651bfced7"
+	}
+}

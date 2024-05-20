@@ -1,0 +1,7 @@
+{
+	"name": "IR-ecom-df-2-on-prems",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Connecting Azure Data factory to on premises "
+	}
+}

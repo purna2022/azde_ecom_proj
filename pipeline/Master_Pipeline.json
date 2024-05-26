@@ -1,0 +1,50 @@
+{
+	"name": "Master_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Hyd File from Sharepoint to Datalake",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "1_Copy Files from Sh Point to Hyd Container",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Copy Hydration File to Database Staging",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy Hyd File from Sharepoint to Datalake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "2_copy Hyd File to DB",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "MiniProj_1"
+		},
+		"annotations": []
+	}
+}

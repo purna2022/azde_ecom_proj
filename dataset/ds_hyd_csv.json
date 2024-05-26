@@ -1,0 +1,48 @@
+{
+	"name": "ds_hyd_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azdatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "hydrationfile1.csv",
+				"folderPath": {
+					"value": "@concat(formatDateTime(utcNow(), 'yyyy'), '/', formatDateTime(utcNow(), 'MM'), '/', formatDateTime(utcNow(), 'dd'))",
+					"type": "Expression"
+				},
+				"fileSystem": "hydartion1"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "slno",
+				"type": "String"
+			},
+			{
+				"name": "SourceSchema",
+				"type": "String"
+			},
+			{
+				"name": "SourceTableName",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "LoadType",
+				"type": "String"
+			}
+		]
+	}
+}

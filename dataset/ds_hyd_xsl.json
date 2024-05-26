@@ -1,0 +1,45 @@
+{
+	"name": "ds_hyd_xsl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azdatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "HydrationFile1.xlsx",
+				"folderPath": {
+					"value": "@concat(formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(), 'MM'), '/', formatDateTime(utcNow(), 'DD'))",
+					"type": "Expression"
+				},
+				"fileSystem": "sharepoint1"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Prop_0",
+				"type": "String"
+			},
+			{
+				"name": "Prop_1",
+				"type": "String"
+			},
+			{
+				"name": "Prop_2",
+				"type": "String"
+			},
+			{
+				"name": "Prop_3",
+				"type": "String"
+			},
+			{
+				"name": "Prop_4",
+				"type": "String"
+			}
+		]
+	}
+}

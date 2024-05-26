@@ -11,7 +11,10 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "hydrationfile1.csv",
-				"folderPath": "@concat(formatDateTime(utcNow(), 'YYYY'), '/', formatDateTime(utcNow(), 'MM'), formatDateTime(utcNow(), 'DD'))",
+				"folderPath": {
+					"value": "@concat(formatDateTime(utcNow(), 'YYYY'), '/', formatDateTime(utcNow(), 'MM'), formatDateTime(utcNow(), 'DD'))",
+					"type": "Expression"
+				},
 				"fileSystem": "hydartion1"
 			},
 			"columnDelimiter": ",",

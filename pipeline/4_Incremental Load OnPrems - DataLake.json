@@ -131,6 +131,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ', item().SourceSchema, '.', item().SourceTableName, ' where ModifiedDate > '''activity('get watermark date').output.value,\n''''and ModifiedDate <= ,'activity('get max date from onprems').output.firstRow)\n\nselect * from schema.tablename \nwhere ModifiedDate > watermarkdate\nand ModifiedDate <= maxdate",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -139,7 +143,17 @@
 							"inputs": [
 								{
 									"referenceName": "ds_get_onprems_tab_recs",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().SourceSchema",
+											"type": "Expression"
+										},
+										"table": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}

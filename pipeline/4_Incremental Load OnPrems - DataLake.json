@@ -62,7 +62,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select lastmodified from stg.watermark1')",
+										"value": "@concat('select lastmodified from stg.watermark1 where schema_name = ''', item().SourceSchema, '''',' and table_name = ''', item().SourceTableName,'''')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -91,7 +91,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select max(ModifiedDate) from ', item().SourceSchema,'.', item().SourceTableName)",
+										"value": "@concat('select max(ModifiedDate) as maxdate from ', item().SourceSchema,'.', item().SourceTableName)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -132,13 +132,32 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select * from ', item().SourceSchema, '.', item().SourceTableName, ' where ModifiedDate > '''activity('get watermark date').output.value,\n''''and ModifiedDate <= ,'activity('get max date from onprems').output.firstRow)\n\nselect * from schema.tablename \nwhere ModifiedDate > watermarkdate\nand ModifiedDate <= maxdate",
+										"value": "@concat('select * from ', item().SourceSchema, '.', item().SourceTableName, ' where ModifiedDate > ''',activity('get watermark date').output.value[0].lastmodified,\n'''',' and ModifiedDate <= ''',activity('get max date from onprems').output.firstRow.maxdate,'''')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -155,7 +174,59 @@
 										}
 									}
 								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze1_csv",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().SourceSchema",
+											"type": "Expression"
+										},
+										"table": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										}
+									}
+								}
 							]
+						},
+						{
+							"name": "Update Watermark table",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "ls_az_sqlserver",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('update stg.watermark1 set lastmodified = ''',activity('get max date from onprems').output.firstRow.maxdate, '''',\n' where schema_name = ''',item().SourceSchema,'''', ' and table_name = ''',item().SourceTableName,'''')\n\n",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
 						}
 					]
 				}

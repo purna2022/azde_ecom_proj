@@ -1,0 +1,56 @@
+{
+	"name": "5_Inc Load Type 2 Onprem to Datalake",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Inc Load Table lists",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select * from stg.hydration_file\nwhere LoadType = 'Inc' \nand status = 1",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_azsqlserver_inc_tablist",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Loop",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Inc Load Table lists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Inc Load Table lists').output.value",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "MiniProj_1"
+		},
+		"annotations": []
+	}
+}

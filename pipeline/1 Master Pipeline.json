@@ -40,6 +40,52 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Full Load",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Load Hydration Pipeline to Database Tab",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "4 Full Load From On-Prems to Datalake",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Incremental Load",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Load Hydration Pipeline to Database Tab",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "5 Incremental Load from onprems to datalake",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {

@@ -1,0 +1,31 @@
+{
+	"name": "6 Meging Stagging Data into Delta Lake",
+	"properties": {
+		"activities": [
+			{
+				"name": "Merging Staging Data into Delta Lake",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/purnachnadra1990@gmail.com/Notebooks/3.Merging BlobData to DeltaLake"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azdatabricks1",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "MiniProject"
+		},
+		"annotations": []
+	}
+}

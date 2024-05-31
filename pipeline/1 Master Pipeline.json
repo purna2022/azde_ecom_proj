@@ -109,6 +109,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "6 Meging Stagging Data into Delta Lake",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
